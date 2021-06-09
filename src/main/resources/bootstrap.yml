@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: spring-cloud-k8s
+  cloud:
+    kubernetes:
+      config:
+        sources:
+          - name: ${spring.application.name}
+        namespace: spring-config

@@ -1,0 +1,45 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'com.palantir.docker' version '0.26.0'
+}
+
+group = 'com.dreamuscompany.logan'
+version = '0.0.4'
+archivesBaseName = 'spring-cloud-k8s'
+
+docker {
+    name "logan831/${bootJar.archiveBaseName.get()}:${version}"
+    dockerfile project.file('Dockerfile')
+    files bootJar.archiveFile
+    buildArgs(['JAR_FILE': "${bootJar.archiveFileName.get()}"])
+}
+
+sourceCompatibility = '1.8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.0.3'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-kubernetes', version: '1.1.9.RELEASE'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-kubernetes-config', version: '1.1.9.RELEASE'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}

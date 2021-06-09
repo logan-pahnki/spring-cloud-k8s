@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-k8s
+spec:
+  selector:
+    matchLabels:
+      app: spring-cloud-k8s
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: spring-cloud-k8s
+    spec:
+      containers:
+        - name: spring-cloud-k8s
+          image: logan831/spring-cloud-k8s:0.0.4
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: dev
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: spring-cloud-k8s
+  name: spring-cloud-k8s
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+  selector:
+    app: spring-cloud-k8s

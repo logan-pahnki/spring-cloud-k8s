@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: spring-config
+  name: spring-cloud-k8s
+data:
+  application.yml: |-
+    spring:
+      profiles: local
+    bean.message: Hello FLO! (this is local)
+    ---
+    spring:
+      profiles: dev
+    bean.message: Hello Dreamus! (this is dev)
